@@ -65,31 +65,54 @@ var createSongRow = function(songNumber, songName, songLength) {
     + '<td class="song-item-duration">' + songLength + '</td>'
     ;
 
-    return template;
+    //return template;
+    return $(template);
 };
 
 // Global scope elements to populate dynamically
-var albumTitle = document.getElementsByClassName('album-view-title')[0];
-var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-var albumImage = document.getElementsByClassName('album-cover-art')[0];
-var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+// var albumTitle = document.getElementsByClassName('album-view-title')[0];
+// var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+// var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+// var albumImage = document.getElementsByClassName('album-cover-art')[0];
+// var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
+//get corresponding album DOM
+var $albumTitle = $('.album-view-title'); //get .album-view-title (class) element.
+var $albumArtist = $('.album-view-artist');
+var $albumReleaseInfo = $('.album-view-release-info');
+var $albumImage = $('.album-cover-art');
+var $albumSongList = $('.album-view-song-list');
 
 var setCurrentAlbum = function(album) {
-  // Assugb values to each part of the Album (text, images)
-  albumTitle.firstChild.nodeValue = album.title;
-  albumArtist.firstChild.nodeValue = album.artist;
-  albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-  albumImage.setAttribute('src', album.albumArtUrl);
+  $albumTitle.text(album.title);
+  $albumArtist.text(album.artist);
+  $albumReleaseInfo.text(album.year + ' ' + album.label);
+  $albumImage.attr('src', album.albumArtUrl);
 
-  // Clear contents of album song list container
-  albumSongList.innerHTML = '';
+  $albumSongList.empty();
 
-  // Build list of objects from album JavaScript object
-  for (var i = 0; i < album.songs.length; i++) {
-      albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+  for (var i = 0; i < album.songs.length; i++){
+    var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+    $albumSongList.append($newRow);
   }
 };
+
+  // Assigns values to each part of the Album (text, images)
+  // albumTitle.firstChild.nodeValue = album.title;
+  // albumArtist.firstChild.nodeValue = album.artist;
+  // albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+  // albumImage.setAttribute('src', album.albumArtUrl);
+
+  // Clear contents of album song list container
+  //albumSongList.innerHTML = '';
+
+  // Build list of objects from album JavaScript object
+  //   for (var i = 0; i < album.songs.length; i++) {
+  //       albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+  //   }
+  // };
+
+
 
 var findParentByClassName = function(element, targetClass) {
   if (element) {
